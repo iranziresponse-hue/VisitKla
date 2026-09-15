@@ -1,0 +1,71 @@
+.story-card {
+  background: var(--color-card);
+  border-radius: 16px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+}
+
+.story-card__progress {
+  display: flex;
+  gap: 4px;
+}
+
+.story-card__dot {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-border);
+}
+
+.story-card__dot--active {
+  background: var(--color-orange);
+}
+
+.story-card__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.story-card__visual {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.story-card__heading {
+  min-width: 0;
+}
+
+.story-card__badge {
+  margin: 0 0 3px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--color-orange);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.story-card__landmark {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.story-card__text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--color-muted);
+}

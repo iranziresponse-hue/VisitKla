@@ -1,0 +1,259 @@
+.route-preview-page {
+  position: relative;
+  height: 100%;
+}
+
+.route-preview-page--empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px 16px;
+}
+
+.route-preview-page__map-pane {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+}
+
+/* A floating popup over the full-bleed map, not a stacked page — the same
+   "appears after you search" sheet used everywhere else in the app, so the
+   tour preview reads as one continuous premium flow instead of a plainer
+   screen bolted on after search. */
+.route-preview-page__content {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  max-height: 66vh;
+  overflow-y: auto;
+  margin: 0;
+  border-radius: 20px;
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.22);
+  background: var(--color-bg);
+  z-index: 4;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.route-preview-page__headline {
+  padding: 12px 16px 4px;
+}
+
+.route-preview-page__headline h2 {
+  font-size: 17px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.route-preview-page__headline p {
+  font-size: 12px;
+  color: var(--color-muted);
+  margin: 2px 0 0;
+}
+
+.route-preview-page__distance {
+  margin-top: 6px !important;
+  line-height: 16px;
+}
+
+.route-preview-page__distance--far {
+  color: #b45309 !important;
+  font-weight: 600;
+}
+
+.route-preview-page__stories-wrap {
+  position: relative;
+  padding: 12px 0;
+}
+
+.route-preview-page__stories {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 16px;
+  padding: 0 16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.route-preview-page__stories::-webkit-scrollbar {
+  display: none;
+}
+
+.route-preview-page__story-item {
+  flex: 0 0 78%;
+  max-width: 280px;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+.route-preview-page__story-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding-bottom: 12px;
+}
+
+.route-preview-page__story-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-border);
+  padding: 0;
+  cursor: pointer;
+}
+
+.route-preview-page__story-dot--active {
+  background: var(--color-orange);
+  width: 18px;
+  border-radius: 3px;
+}
+
+.route-preview-page__arrow {
+  display: none;
+}
+
+.route-preview-page__bottom {
+  padding: 4px 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.route-preview-page__watch {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: left;
+  color: #fff;
+  background: linear-gradient(135deg, #2b2622, #14110f);
+  box-shadow: 0 12px 26px rgba(20, 17, 15, 0.28);
+  position: relative;
+  overflow: hidden;
+}
+
+.route-preview-page__watch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120px 60px at 88% 20%,
+    rgba(255, 140, 26, 0.35),
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.route-preview-page__watch:hover {
+  filter: brightness(1.12);
+}
+
+.route-preview-page__watch-icon {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  background: linear-gradient(135deg, #ff8c1a, #ef5f00);
+  box-shadow: 0 6px 16px rgba(255, 107, 0, 0.45);
+}
+
+.route-preview-page__watch-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.route-preview-page__watch-copy strong {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.route-preview-page__watch-copy small {
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.route-preview-page__btn {
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.route-preview-page__btn--landmark {
+  background: var(--color-ink);
+}
+
+.route-preview-page__btn--landmark:hover {
+  background: #000;
+}
+
+/* Desktop: the same floating popup, just docked to the left edge full-height
+   instead of a bottom sheet — more width to work with than a phone screen. */
+@media (min-width: 900px) {
+  .route-preview-page__content {
+    left: 20px;
+    right: auto;
+    top: 20px;
+    bottom: 20px;
+    max-height: none;
+    width: 420px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .route-preview-page__story-item {
+    flex-basis: 260px;
+    max-width: 260px;
+  }
+
+  .route-preview-page__arrow {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--color-ink);
+  }
+
+  .route-preview-page__arrow:hover {
+    background: #f5f5f5;
+  }
+
+  .route-preview-page__arrow--prev {
+    left: 4px;
+  }
+
+  .route-preview-page__arrow--next {
+    right: 4px;
+  }
+}

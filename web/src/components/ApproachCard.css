@@ -1,0 +1,48 @@
+.approach-card {
+  background: var(--color-card);
+  border: 1px dashed #9ca3af;
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.approach-card__row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.approach-card__visual {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.approach-card__text-block {
+  flex: 1;
+  min-width: 0;
+}
+
+.approach-card__badge {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #6b7280;
+  letter-spacing: 0.4px;
+}
+
+.approach-card__text {
+  margin: 0;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.approach-card__hint {
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-muted);
+}

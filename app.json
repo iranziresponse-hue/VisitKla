@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "VisitKla",
+    "slug": "visitkla",
+    "scheme": "visitkla",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "bundleIdentifier": "com.visitkla.app",
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "VisitKla uses your location to show you as a dot on the route and to auto-advance landmark steps as you move."
+      }
+    },
+    "android": {
+      "package": "com.visitkla.app",
+      "permissions": ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"]
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "VisitKla uses your location to show you on the route and auto-advance landmark steps."
+        }
+      ],
+      "@maplibre/maplibre-react-native"
+    ],
+    "extra": {
+      "supabaseUrl": "https://YOUR-PROJECT.supabase.co",
+      "supabaseAnonKey": "YOUR-ANON-KEY",
+      "reportIssueWhatsappNumber": "256700000000"
+    }
+  }
+}

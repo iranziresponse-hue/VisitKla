@@ -1,0 +1,58 @@
+.nav-instruction {
+  background: var(--color-card);
+  border-radius: 16px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+}
+
+.nav-instruction__progress {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.nav-instruction__dot {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-border);
+}
+
+.nav-instruction__dot--active {
+  background: var(--color-orange);
+}
+
+.nav-instruction__row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.nav-instruction__visual {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.nav-instruction__text-block {
+  flex: 1;
+  min-width: 0;
+}
+
+.nav-instruction__badge {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-orange);
+  letter-spacing: 0.4px;
+}
+
+.nav-instruction__text {
+  margin: 0;
+  font-size: 19px;
+  line-height: 25px;
+  font-weight: 700;
+  color: var(--color-ink);
+}

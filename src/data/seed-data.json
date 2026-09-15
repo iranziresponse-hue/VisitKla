@@ -1,0 +1,297 @@
+{
+  "landmarks": [
+    { "id": "makerere_main_gate", "name": "Makerere Main Gate", "alias": ["Makerere Gate", "Main Gate", "Makerere"], "lat": 0.3335, "lng": 32.5676, "photo_url": "https://picsum.photos/seed/makerere_main_gate/400/300", "type": "gate" },
+    { "id": "university_hospital", "name": "Makerere University Hospital", "alias": ["University Hospital", "Uni Hospital"], "lat": 0.3278, "lng": 32.5708, "photo_url": "https://picsum.photos/seed/university_hospital/400/300", "type": "hospital" },
+    { "id": "ham_towers", "name": "Ham Towers", "alias": ["Ham Tower", "Ham Building"], "lat": 0.3280, "lng": 32.5704, "photo_url": "https://picsum.photos/seed/ham_towers/400/300", "type": "landmark" },
+    { "id": "wandegeya_taxi_stage", "name": "Wandegeya Taxi Stage", "alias": ["Wandegeya Stage", "Taxi Stage"], "lat": 0.3300, "lng": 32.5740, "photo_url": "https://picsum.photos/seed/wandegeya_taxi_stage/400/300", "type": "stage" },
+    { "id": "wandegeya_total", "name": "Wandegeya Total", "alias": ["Total Wandegeya", "Total Makerere", "Total Petrol Station"], "lat": 0.3298, "lng": 32.5730, "photo_url": "https://picsum.photos/seed/wandegeya_total/400/300", "type": "fuel_station" },
+    { "id": "wandegeya_market", "name": "Wandegeya Market", "alias": ["Wandegeya Mkt"], "lat": 0.3310, "lng": 32.5734, "photo_url": "https://picsum.photos/seed/wandegeya_market/400/300", "type": "market" },
+    { "id": "wandegeya_police_post", "name": "Wandegeya Police Post", "alias": ["Wandegeya Police", "Wandegeya Police Station"], "lat": 0.3297, "lng": 32.5745, "photo_url": "https://picsum.photos/seed/wandegeya_police_post/400/300", "type": "landmark" },
+    { "id": "bombo_road_junction", "name": "Bombo Road Junction", "alias": ["Bombo Rd Junction"], "lat": 0.3345, "lng": 32.5747, "photo_url": "https://picsum.photos/seed/bombo_road_junction/400/300", "type": "junction" },
+    { "id": "cps_roundabout", "name": "CPS Roundabout", "alias": ["Central Police Roundabout", "CPS", "Central Police Station"], "lat": 0.3161, "lng": 32.5785, "photo_url": "https://picsum.photos/seed/cps_roundabout/400/300", "type": "roundabout" },
+    { "id": "old_taxi_park", "name": "Old Taxi Park", "alias": ["Taxi Park", "Town"], "lat": 0.3122, "lng": 32.5770, "photo_url": "https://picsum.photos/seed/old_taxi_park/400/300", "type": "landmark" },
+    { "id": "mulago_roundabout", "name": "Mulago Roundabout", "alias": ["Mulago R/A"], "lat": 0.3383, "lng": 32.5753, "photo_url": "https://picsum.photos/seed/mulago_roundabout/400/300", "type": "roundabout" },
+    { "id": "mulago_hospital_gate", "name": "Mulago Hospital Main Gate", "alias": ["Mulago Hospital", "Mulago", "Mulago National Referral Hospital"], "lat": 0.3389, "lng": 32.5758, "photo_url": "https://picsum.photos/seed/mulago_hospital_gate/400/300", "type": "hospital" },
+    { "id": "kubiri", "name": "Kubiri", "alias": ["Kubiri Mulago"], "lat": 0.3380, "lng": 32.5725, "photo_url": "https://picsum.photos/seed/kubiri/400/300", "type": "junction" },
+    { "id": "clock_tower", "name": "Clock Tower", "alias": ["Town Clock Tower"], "lat": 0.3094, "lng": 32.5784, "photo_url": "https://picsum.photos/seed/clock_tower/400/300", "type": "landmark" },
+    { "id": "nakasero_market", "name": "Nakasero Market", "alias": ["Nakasero Mkt"], "lat": 0.3118, "lng": 32.5805, "photo_url": "https://picsum.photos/seed/nakasero_market/400/300", "type": "market" }
+  ],
+  "routes": [
+    {
+      "id": "makerere_main_gate_to_wandegeya_total",
+      "start": "Makerere Main Gate",
+      "end": "Wandegeya Total",
+      "boda_price_min": 3000,
+      "boda_price_max": 5000,
+      "panya_tip": "If traffic is jammed near Wandegeya roundabout, boda can use the small road behind Ham Towers to skip it.",
+      "steps": [
+        { "order": 1, "text": "Start at Makerere Main Gate. Face out of campus and go downhill on the tarmac road.", "landmark": "Makerere Main Gate", "lat": 0.3335, "lng": 32.5676, "photo_url": "https://picsum.photos/seed/makerere_main_gate/400/300" },
+        { "order": 2, "text": "Pass University Hospital on your right side. Keep going straight, don't branch anywhere.", "landmark": "Makerere University Hospital", "lat": 0.3278, "lng": 32.5708, "photo_url": "https://picsum.photos/seed/university_hospital/400/300" },
+        { "order": 3, "text": "Ham Towers will be on your right, that's where the boda guys wait. You're almost there.", "landmark": "Ham Towers", "lat": 0.3280, "lng": 32.5704, "photo_url": "https://picsum.photos/seed/ham_towers/400/300" },
+        { "order": 4, "text": "You have arrived at Total Wandegeya, the big fuel station on your left.", "landmark": "Wandegeya Total", "lat": 0.3298, "lng": 32.5730, "photo_url": "https://picsum.photos/seed/wandegeya_total/400/300" }
+      ]
+    },
+    {
+      "id": "wandegeya_total_to_makerere_main_gate",
+      "start": "Wandegeya Total",
+      "end": "Makerere Main Gate",
+      "boda_price_min": 3000,
+      "boda_price_max": 5000,
+      "panya_tip": "Coming from Wandegeya, if the road is jammed, branch near Ham Towers — it rejoins near the gate.",
+      "steps": [
+        { "order": 1, "text": "Start at Total Wandegeya, the fuel station facing Bombo Road. Head uphill towards Makerere.", "landmark": "Wandegeya Total", "lat": 0.3298, "lng": 32.5730, "photo_url": "https://picsum.photos/seed/wandegeya_total/400/300" },
+        { "order": 2, "text": "Ham Towers passes on your left now, boda stage there. Keep straight, uphill.", "landmark": "Ham Towers", "lat": 0.3280, "lng": 32.5704, "photo_url": "https://picsum.photos/seed/ham_towers/400/300" },
+        { "order": 3, "text": "University Hospital appears on your left. The gate is getting close.", "landmark": "Makerere University Hospital", "lat": 0.3278, "lng": 32.5708, "photo_url": "https://picsum.photos/seed/university_hospital/400/300" },
+        { "order": 4, "text": "You have arrived at Makerere Main Gate. Welcome to campus.", "landmark": "Makerere Main Gate", "lat": 0.3335, "lng": 32.5676, "photo_url": "https://picsum.photos/seed/makerere_main_gate/400/300" }
+      ]
+    },
+    {
+      "id": "makerere_main_gate_to_wandegeya_taxi_stage",
+      "start": "Makerere Main Gate",
+      "end": "Wandegeya Taxi Stage",
+      "boda_price_min": 2000,
+      "boda_price_max": 3000,
+      "panya_tip": "Boda guys cut behind Ham Towers to dodge the Wandegeya roundabout jam.",
+      "steps": [
+        { "order": 1, "text": "Start at Makerere Main Gate, go down towards Wandegeya side.", "landmark": "Makerere Main Gate", "lat": 0.3335, "lng": 32.5676, "photo_url": "https://picsum.photos/seed/makerere_main_gate/400/300" },
+        { "order": 2, "text": "Ham Towers will be on your right, boda guys wait there. Keep straight towards the taxi stage.", "landmark": "Ham Towers", "lat": 0.3280, "lng": 32.5704, "photo_url": "https://picsum.photos/seed/ham_towers/400/300" },
+        { "order": 3, "text": "You have arrived at Wandegeya Taxi Stage, full of taxis and bodas.", "landmark": "Wandegeya Taxi Stage", "lat": 0.3300, "lng": 32.5740, "photo_url": "https://picsum.photos/seed/wandegeya_taxi_stage/400/300" }
+      ]
+    },
+    {
+      "id": "wandegeya_taxi_stage_to_makerere_main_gate",
+      "start": "Wandegeya Taxi Stage",
+      "end": "Makerere Main Gate",
+      "boda_price_min": 2000,
+      "boda_price_max": 3000,
+      "panya_tip": "Boda guys cut behind Ham Towers to dodge the Wandegeya roundabout jam.",
+      "steps": [
+        { "order": 1, "text": "Start at Wandegeya Taxi Stage, head towards Ham Towers side.", "landmark": "Wandegeya Taxi Stage", "lat": 0.3300, "lng": 32.5740, "photo_url": "https://picsum.photos/seed/wandegeya_taxi_stage/400/300" },
+        { "order": 2, "text": "Ham Towers passes on your left, boda stage there.", "landmark": "Ham Towers", "lat": 0.3280, "lng": 32.5704, "photo_url": "https://picsum.photos/seed/ham_towers/400/300" },
+        { "order": 3, "text": "You have arrived at Makerere Main Gate.", "landmark": "Makerere Main Gate", "lat": 0.3335, "lng": 32.5676, "photo_url": "https://picsum.photos/seed/makerere_main_gate/400/300" }
+      ]
+    },
+    {
+      "id": "makerere_main_gate_to_mulago_hospital_gate",
+      "start": "Makerere Main Gate",
+      "end": "Mulago Hospital Main Gate",
+      "boda_price_min": 4000,
+      "boda_price_max": 6000,
+      "panya_tip": "At Bombo Road Junction during jam hours, bodas cut through Kubiri to reach Mulago faster.",
+      "steps": [
+        { "order": 1, "text": "Start at Makerere Main Gate, head down to Wandegeya.", "landmark": "Makerere Main Gate", "lat": 0.3335, "lng": 32.5676, "photo_url": "https://picsum.photos/seed/makerere_main_gate/400/300" },
+        { "order": 2, "text": "Pass Wandegeya Taxi Stage, stay on the main tarmac. Don't stop for the taxi touts.", "landmark": "Wandegeya Taxi Stage", "lat": 0.3300, "lng": 32.5740, "photo_url": "https://picsum.photos/seed/wandegeya_taxi_stage/400/300" },
+        { "order": 3, "text": "At Bombo Road Junction, branch right towards Mulago, not straight to town.", "landmark": "Bombo Road Junction", "lat": 0.3345, "lng": 32.5747, "photo_url": "https://picsum.photos/seed/bombo_road_junction/400/300" },
+        { "order": 4, "text": "Mulago Roundabout, the hospital signs start showing now.", "landmark": "Mulago Roundabout", "lat": 0.3383, "lng": 32.5753, "photo_url": "https://picsum.photos/seed/mulago_roundabout/400/300" },
+        { "order": 5, "text": "You have arrived at Mulago Hospital Main Gate.", "landmark": "Mulago Hospital Main Gate", "lat": 0.3389, "lng": 32.5758, "photo_url": "https://picsum.photos/seed/mulago_hospital_gate/400/300" }
+      ]
+    },
+    {
+      "id": "mulago_hospital_gate_to_makerere_main_gate",
+      "start": "Mulago Hospital Main Gate",
+      "end": "Makerere Main Gate",
+      "boda_price_min": 4000,
+      "boda_price_max": 6000,
+      "panya_tip": "At Bombo Road Junction during jam hours, bodas cut through Kubiri to reach Wandegeya faster.",
+      "steps": [
+        { "order": 1, "text": "Start at Mulago Hospital Main Gate, face away from the hospital, head to the roundabout.", "landmark": "Mulago Hospital Main Gate", "lat": 0.3389, "lng": 32.5758, "photo_url": "https://picsum.photos/seed/mulago_hospital_gate/400/300" },
+        { "order": 2, "text": "At Mulago Roundabout, take the road signposted Wandegeya / Makerere.", "landmark": "Mulago Roundabout", "lat": 0.3383, "lng": 32.5753, "photo_url": "https://picsum.photos/seed/mulago_roundabout/400/300" },
+        { "order": 3, "text": "Pass Bombo Road Junction, keep straight towards Wandegeya. Don't branch to town.", "landmark": "Bombo Road Junction", "lat": 0.3345, "lng": 32.5747, "photo_url": "https://picsum.photos/seed/bombo_road_junction/400/300" },
+        { "order": 4, "text": "Wandegeya Taxi Stage on your right, keep going uphill.", "landmark": "Wandegeya Taxi Stage", "lat": 0.3300, "lng": 32.5740, "photo_url": "https://picsum.photos/seed/wandegeya_taxi_stage/400/300" },
+        { "order": 5, "text": "You have arrived at Makerere Main Gate.", "landmark": "Makerere Main Gate", "lat": 0.3335, "lng": 32.5676, "photo_url": "https://picsum.photos/seed/makerere_main_gate/400/300" }
+      ]
+    },
+    {
+      "id": "makerere_main_gate_to_old_taxi_park",
+      "start": "Makerere Main Gate",
+      "end": "Old Taxi Park",
+      "boda_price_min": 5000,
+      "boda_price_max": 8000,
+      "panya_tip": "Avoid Bombo Road at 5-7pm, it's always jammed. Boda can use the back road near CPS to save 15 minutes.",
+      "steps": [
+        { "order": 1, "text": "Start at Makerere Main Gate, head down to Wandegeya.", "landmark": "Makerere Main Gate", "lat": 0.3335, "lng": 32.5676, "photo_url": "https://picsum.photos/seed/makerere_main_gate/400/300" },
+        { "order": 2, "text": "Pass Total Wandegeya on your right, continue straight on Bombo Road.", "landmark": "Wandegeya Total", "lat": 0.3298, "lng": 32.5730, "photo_url": "https://picsum.photos/seed/wandegeya_total/400/300" },
+        { "order": 3, "text": "CPS Roundabout, the police station is on your left. Keep straight towards town center.", "landmark": "CPS Roundabout", "lat": 0.3161, "lng": 32.5785, "photo_url": "https://picsum.photos/seed/cps_roundabout/400/300" },
+        { "order": 4, "text": "You have arrived at Old Taxi Park, the heart of town.", "landmark": "Old Taxi Park", "lat": 0.3122, "lng": 32.5770, "photo_url": "https://picsum.photos/seed/old_taxi_park/400/300" }
+      ]
+    },
+    {
+      "id": "old_taxi_park_to_makerere_main_gate",
+      "start": "Old Taxi Park",
+      "end": "Makerere Main Gate",
+      "boda_price_min": 5000,
+      "boda_price_max": 8000,
+      "panya_tip": "Avoid Bombo Road at 5-7pm, it's always jammed. Boda can use the back road near CPS to save 15 minutes.",
+      "steps": [
+        { "order": 1, "text": "Start at Old Taxi Park, head north on Bombo Road, away from the clock tower.", "landmark": "Old Taxi Park", "lat": 0.3122, "lng": 32.5770, "photo_url": "https://picsum.photos/seed/old_taxi_park/400/300" },
+        { "order": 2, "text": "Pass CPS Roundabout, keep straight. Don't branch to Kampala Road.", "landmark": "CPS Roundabout", "lat": 0.3161, "lng": 32.5785, "photo_url": "https://picsum.photos/seed/cps_roundabout/400/300" },
+        { "order": 3, "text": "Total Wandegeya appears on your left, you're almost at Makerere.", "landmark": "Wandegeya Total", "lat": 0.3298, "lng": 32.5730, "photo_url": "https://picsum.photos/seed/wandegeya_total/400/300" },
+        { "order": 4, "text": "You have arrived at Makerere Main Gate.", "landmark": "Makerere Main Gate", "lat": 0.3335, "lng": 32.5676, "photo_url": "https://picsum.photos/seed/makerere_main_gate/400/300" }
+      ]
+    },
+    {
+      "id": "wandegeya_total_to_mulago_hospital_gate",
+      "start": "Wandegeya Total",
+      "end": "Mulago Hospital Main Gate",
+      "boda_price_min": 3000,
+      "boda_price_max": 5000,
+      "panya_tip": "Boda shortcut through Kubiri avoids the Bombo Road Junction jam during rush hour.",
+      "steps": [
+        { "order": 1, "text": "Start at Total Wandegeya, face Bombo Road towards the Mulago side.", "landmark": "Wandegeya Total", "lat": 0.3298, "lng": 32.5730, "photo_url": "https://picsum.photos/seed/wandegeya_total/400/300" },
+        { "order": 2, "text": "Pass Wandegeya Police Post on your right.", "landmark": "Wandegeya Police Post", "lat": 0.3297, "lng": 32.5745, "photo_url": "https://picsum.photos/seed/wandegeya_police_post/400/300" },
+        { "order": 3, "text": "At Bombo Road Junction, branch right towards Mulago.", "landmark": "Bombo Road Junction", "lat": 0.3345, "lng": 32.5747, "photo_url": "https://picsum.photos/seed/bombo_road_junction/400/300" },
+        { "order": 4, "text": "Mulago Roundabout, you're almost there.", "landmark": "Mulago Roundabout", "lat": 0.3383, "lng": 32.5753, "photo_url": "https://picsum.photos/seed/mulago_roundabout/400/300" },
+        { "order": 5, "text": "You have arrived at Mulago Hospital Main Gate.", "landmark": "Mulago Hospital Main Gate", "lat": 0.3389, "lng": 32.5758, "photo_url": "https://picsum.photos/seed/mulago_hospital_gate/400/300" }
+      ]
+    },
+    {
+      "id": "mulago_hospital_gate_to_wandegeya_total",
+      "start": "Mulago Hospital Main Gate",
+      "end": "Wandegeya Total",
+      "boda_price_min": 3000,
+      "boda_price_max": 5000,
+      "panya_tip": "Boda shortcut through Kubiri avoids the Bombo Road Junction jam during rush hour.",
+      "steps": [
+        { "order": 1, "text": "Start at Mulago Hospital Main Gate, head to the roundabout.", "landmark": "Mulago Hospital Main Gate", "lat": 0.3389, "lng": 32.5758, "photo_url": "https://picsum.photos/seed/mulago_hospital_gate/400/300" },
+        { "order": 2, "text": "At Mulago Roundabout, take the road signposted Wandegeya.", "landmark": "Mulago Roundabout", "lat": 0.3383, "lng": 32.5753, "photo_url": "https://picsum.photos/seed/mulago_roundabout/400/300" },
+        { "order": 3, "text": "Pass Bombo Road Junction, keep straight to Wandegeya.", "landmark": "Bombo Road Junction", "lat": 0.3345, "lng": 32.5747, "photo_url": "https://picsum.photos/seed/bombo_road_junction/400/300" },
+        { "order": 4, "text": "Wandegeya Police Post on your left.", "landmark": "Wandegeya Police Post", "lat": 0.3297, "lng": 32.5745, "photo_url": "https://picsum.photos/seed/wandegeya_police_post/400/300" },
+        { "order": 5, "text": "You have arrived at Total Wandegeya.", "landmark": "Wandegeya Total", "lat": 0.3298, "lng": 32.5730, "photo_url": "https://picsum.photos/seed/wandegeya_total/400/300" }
+      ]
+    },
+    {
+      "id": "wandegeya_total_to_old_taxi_park",
+      "start": "Wandegeya Total",
+      "end": "Old Taxi Park",
+      "boda_price_min": 3000,
+      "boda_price_max": 5000,
+      "panya_tip": "Boda riders use the lane behind CPS to skip the roundabout jam.",
+      "steps": [
+        { "order": 1, "text": "Start at Total Wandegeya, face Bombo Road towards town.", "landmark": "Wandegeya Total", "lat": 0.3298, "lng": 32.5730, "photo_url": "https://picsum.photos/seed/wandegeya_total/400/300" },
+        { "order": 2, "text": "CPS Roundabout, keep straight towards town center.", "landmark": "CPS Roundabout", "lat": 0.3161, "lng": 32.5785, "photo_url": "https://picsum.photos/seed/cps_roundabout/400/300" },
+        { "order": 3, "text": "You have arrived at Old Taxi Park.", "landmark": "Old Taxi Park", "lat": 0.3122, "lng": 32.5770, "photo_url": "https://picsum.photos/seed/old_taxi_park/400/300" }
+      ]
+    },
+    {
+      "id": "old_taxi_park_to_wandegeya_total",
+      "start": "Old Taxi Park",
+      "end": "Wandegeya Total",
+      "boda_price_min": 3000,
+      "boda_price_max": 5000,
+      "panya_tip": "Boda riders use the lane behind CPS to skip the roundabout jam.",
+      "steps": [
+        { "order": 1, "text": "Start at Old Taxi Park, head north towards Wandegeya.", "landmark": "Old Taxi Park", "lat": 0.3122, "lng": 32.5770, "photo_url": "https://picsum.photos/seed/old_taxi_park/400/300" },
+        { "order": 2, "text": "Pass CPS Roundabout, keep straight.", "landmark": "CPS Roundabout", "lat": 0.3161, "lng": 32.5785, "photo_url": "https://picsum.photos/seed/cps_roundabout/400/300" },
+        { "order": 3, "text": "You have arrived at Total Wandegeya.", "landmark": "Wandegeya Total", "lat": 0.3298, "lng": 32.5730, "photo_url": "https://picsum.photos/seed/wandegeya_total/400/300" }
+      ]
+    },
+    {
+      "id": "wandegeya_market_to_mulago_hospital_gate",
+      "start": "Wandegeya Market",
+      "end": "Mulago Hospital Main Gate",
+      "boda_price_min": 3000,
+      "boda_price_max": 5000,
+      "panya_tip": "The Kubiri back road is a good shortcut avoiding the main Bombo Road jam near Wandegeya.",
+      "steps": [
+        { "order": 1, "text": "Start at Wandegeya Market, head out towards the Kubiri road.", "landmark": "Wandegeya Market", "lat": 0.3310, "lng": 32.5734, "photo_url": "https://picsum.photos/seed/wandegeya_market/400/300" },
+        { "order": 2, "text": "Pass Kubiri, keep straight. Don't branch into the market lane.", "landmark": "Kubiri", "lat": 0.3380, "lng": 32.5725, "photo_url": "https://picsum.photos/seed/kubiri/400/300" },
+        { "order": 3, "text": "Mulago Roundabout, almost there now.", "landmark": "Mulago Roundabout", "lat": 0.3383, "lng": 32.5753, "photo_url": "https://picsum.photos/seed/mulago_roundabout/400/300" },
+        { "order": 4, "text": "You have arrived at Mulago Hospital Main Gate.", "landmark": "Mulago Hospital Main Gate", "lat": 0.3389, "lng": 32.5758, "photo_url": "https://picsum.photos/seed/mulago_hospital_gate/400/300" }
+      ]
+    },
+    {
+      "id": "mulago_hospital_gate_to_wandegeya_market",
+      "start": "Mulago Hospital Main Gate",
+      "end": "Wandegeya Market",
+      "boda_price_min": 3000,
+      "boda_price_max": 5000,
+      "panya_tip": "The Kubiri back road is a good shortcut avoiding the main Bombo Road jam near Wandegeya.",
+      "steps": [
+        { "order": 1, "text": "Start at Mulago Hospital Main Gate, head to the roundabout.", "landmark": "Mulago Hospital Main Gate", "lat": 0.3389, "lng": 32.5758, "photo_url": "https://picsum.photos/seed/mulago_hospital_gate/400/300" },
+        { "order": 2, "text": "At Mulago Roundabout, branch towards Kubiri.", "landmark": "Mulago Roundabout", "lat": 0.3383, "lng": 32.5753, "photo_url": "https://picsum.photos/seed/mulago_roundabout/400/300" },
+        { "order": 3, "text": "Pass Kubiri, continue straight.", "landmark": "Kubiri", "lat": 0.3380, "lng": 32.5725, "photo_url": "https://picsum.photos/seed/kubiri/400/300" },
+        { "order": 4, "text": "You have arrived at Wandegeya Market.", "landmark": "Wandegeya Market", "lat": 0.3310, "lng": 32.5734, "photo_url": "https://picsum.photos/seed/wandegeya_market/400/300" }
+      ]
+    },
+    {
+      "id": "wandegeya_taxi_stage_to_ham_towers",
+      "start": "Wandegeya Taxi Stage",
+      "end": "Ham Towers",
+      "boda_price_min": 1000,
+      "boda_price_max": 2000,
+      "panya_tip": "Short walk, no need for a boda unless you're carrying heavy luggage.",
+      "steps": [
+        { "order": 1, "text": "Start at Wandegeya Taxi Stage, walk towards Ham Towers.", "landmark": "Wandegeya Taxi Stage", "lat": 0.3300, "lng": 32.5740, "photo_url": "https://picsum.photos/seed/wandegeya_taxi_stage/400/300" },
+        { "order": 2, "text": "You have arrived at Ham Towers, boda guys wait right here.", "landmark": "Ham Towers", "lat": 0.3280, "lng": 32.5704, "photo_url": "https://picsum.photos/seed/ham_towers/400/300" }
+      ]
+    },
+    {
+      "id": "ham_towers_to_wandegeya_taxi_stage",
+      "start": "Ham Towers",
+      "end": "Wandegeya Taxi Stage",
+      "boda_price_min": 1000,
+      "boda_price_max": 2000,
+      "panya_tip": "Short walk, no need for a boda unless you're carrying heavy luggage.",
+      "steps": [
+        { "order": 1, "text": "Start at Ham Towers, head towards Wandegeya.", "landmark": "Ham Towers", "lat": 0.3280, "lng": 32.5704, "photo_url": "https://picsum.photos/seed/ham_towers/400/300" },
+        { "order": 2, "text": "You have arrived at Wandegeya Taxi Stage.", "landmark": "Wandegeya Taxi Stage", "lat": 0.3300, "lng": 32.5740, "photo_url": "https://picsum.photos/seed/wandegeya_taxi_stage/400/300" }
+      ]
+    },
+    {
+      "id": "mulago_hospital_gate_to_clock_tower",
+      "start": "Mulago Hospital Main Gate",
+      "end": "Clock Tower",
+      "boda_price_min": 5000,
+      "boda_price_max": 7000,
+      "panya_tip": "Avoid this route at 6pm, the Mulago-CPS road jams badly. Boda riders detour through Wandegeya back streets.",
+      "steps": [
+        { "order": 1, "text": "Start at Mulago Hospital Main Gate, head to the roundabout.", "landmark": "Mulago Hospital Main Gate", "lat": 0.3389, "lng": 32.5758, "photo_url": "https://picsum.photos/seed/mulago_hospital_gate/400/300" },
+        { "order": 2, "text": "At Mulago Roundabout, take the road towards CPS / town.", "landmark": "Mulago Roundabout", "lat": 0.3383, "lng": 32.5753, "photo_url": "https://picsum.photos/seed/mulago_roundabout/400/300" },
+        { "order": 3, "text": "Pass CPS Roundabout, keep straight towards town.", "landmark": "CPS Roundabout", "lat": 0.3161, "lng": 32.5785, "photo_url": "https://picsum.photos/seed/cps_roundabout/400/300" },
+        { "order": 4, "text": "Nakasero Market will be on your left, keep going.", "landmark": "Nakasero Market", "lat": 0.3118, "lng": 32.5805, "photo_url": "https://picsum.photos/seed/nakasero_market/400/300" },
+        { "order": 5, "text": "You have arrived at Clock Tower, town center.", "landmark": "Clock Tower", "lat": 0.3094, "lng": 32.5784, "photo_url": "https://picsum.photos/seed/clock_tower/400/300" }
+      ]
+    },
+    {
+      "id": "clock_tower_to_mulago_hospital_gate",
+      "start": "Clock Tower",
+      "end": "Mulago Hospital Main Gate",
+      "boda_price_min": 5000,
+      "boda_price_max": 7000,
+      "panya_tip": "Avoid this route at 6pm, the Mulago-CPS road jams badly. Boda riders detour through Wandegeya back streets.",
+      "steps": [
+        { "order": 1, "text": "Start at Clock Tower, head north away from town center.", "landmark": "Clock Tower", "lat": 0.3094, "lng": 32.5784, "photo_url": "https://picsum.photos/seed/clock_tower/400/300" },
+        { "order": 2, "text": "Nakasero Market on your right, keep straight.", "landmark": "Nakasero Market", "lat": 0.3118, "lng": 32.5805, "photo_url": "https://picsum.photos/seed/nakasero_market/400/300" },
+        { "order": 3, "text": "Pass CPS Roundabout, keep straight towards Mulago.", "landmark": "CPS Roundabout", "lat": 0.3161, "lng": 32.5785, "photo_url": "https://picsum.photos/seed/cps_roundabout/400/300" },
+        { "order": 4, "text": "At Mulago Roundabout, branch towards the hospital.", "landmark": "Mulago Roundabout", "lat": 0.3383, "lng": 32.5753, "photo_url": "https://picsum.photos/seed/mulago_roundabout/400/300" },
+        { "order": 5, "text": "You have arrived at Mulago Hospital Main Gate.", "landmark": "Mulago Hospital Main Gate", "lat": 0.3389, "lng": 32.5758, "photo_url": "https://picsum.photos/seed/mulago_hospital_gate/400/300" }
+      ]
+    },
+    {
+      "id": "ham_towers_to_kubiri",
+      "start": "Ham Towers",
+      "end": "Kubiri",
+      "boda_price_min": 2000,
+      "boda_price_max": 3500,
+      "panya_tip": "This cuts through quieter roads, faster than going via Mulago Roundabout during rush hour.",
+      "steps": [
+        { "order": 1, "text": "Start at Ham Towers, head towards Bombo Road Junction.", "landmark": "Ham Towers", "lat": 0.3280, "lng": 32.5704, "photo_url": "https://picsum.photos/seed/ham_towers/400/300" },
+        { "order": 2, "text": "Pass Bombo Road Junction, branch towards Kubiri.", "landmark": "Bombo Road Junction", "lat": 0.3345, "lng": 32.5747, "photo_url": "https://picsum.photos/seed/bombo_road_junction/400/300" },
+        { "order": 3, "text": "You have arrived at Kubiri.", "landmark": "Kubiri", "lat": 0.3380, "lng": 32.5725, "photo_url": "https://picsum.photos/seed/kubiri/400/300" }
+      ]
+    },
+    {
+      "id": "kubiri_to_ham_towers",
+      "start": "Kubiri",
+      "end": "Ham Towers",
+      "boda_price_min": 2000,
+      "boda_price_max": 3500,
+      "panya_tip": "This cuts through quieter roads, faster than going via Mulago Roundabout during rush hour.",
+      "steps": [
+        { "order": 1, "text": "Start at Kubiri, head towards Bombo Road Junction.", "landmark": "Kubiri", "lat": 0.3380, "lng": 32.5725, "photo_url": "https://picsum.photos/seed/kubiri/400/300" },
+        { "order": 2, "text": "Pass Bombo Road Junction, branch towards Wandegeya.", "landmark": "Bombo Road Junction", "lat": 0.3345, "lng": 32.5747, "photo_url": "https://picsum.photos/seed/bombo_road_junction/400/300" },
+        { "order": 3, "text": "You have arrived at Ham Towers.", "landmark": "Ham Towers", "lat": 0.3280, "lng": 32.5704, "photo_url": "https://picsum.photos/seed/ham_towers/400/300" }
+      ]
+    }
+  ]
+}

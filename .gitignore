@@ -1,0 +1,23 @@
+node_modules/
+.expo/
+dist/
+web-build/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+.DS_Store
+*.log
+.env
+.env.local
+android/
+ios/
+
+# Raw reference photos/audio used to derive shipped assets — some are
+# oversized (a 150MB+ audio clip) and/or of uncertain licensing for public
+# redistribution (a manufacturer promo photo, a possibly-copyrighted audio
+# rip). Only the processed, actually-shipped files under web/public/assets
+# belong in the repo.
+web/reference-assets/

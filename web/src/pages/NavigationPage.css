@@ -1,0 +1,167 @@
+.navigation-page {
+  max-width: 480px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.navigation-page--empty {
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px 16px;
+}
+
+.navigation-page__map {
+  flex: 1 1 auto;
+  min-height: 160px;
+  position: relative;
+}
+
+.navigation-page__lang-toggle {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  background: rgba(26, 26, 26, 0.85);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* The sheet is a flex column so the action bar is a sibling of the
+   scrollable content, never inside it — it can never be scrolled out of
+   view, no matter how tall the instruction/price content gets. */
+.navigation-page__sheet {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 52vh;
+  background: var(--color-bg);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.navigation-page__sheet-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 14px 16px 4px;
+}
+
+.navigation-page__actions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px 16px;
+}
+
+.navigation-page__report {
+  background: none;
+  border: none;
+  padding: 8px 0;
+  color: var(--color-muted-2);
+  font-size: 13px;
+  text-decoration: underline;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.navigation-page__next {
+  flex: 1;
+  background: var(--color-orange);
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.navigation-page__next:hover {
+  background: #e65f00;
+}
+
+.navigation-page__arrived-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 10;
+}
+
+.navigation-page__arrived-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  max-width: 320px;
+}
+
+.navigation-page__arrived-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 6px;
+}
+
+.navigation-page__arrived-subtitle {
+  font-size: 14px;
+  color: var(--color-muted);
+  margin: 0 0 16px;
+}
+
+.navigation-page__arrived-btn {
+  background: var(--color-orange);
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Desktop: full-bleed map with a floating instruction panel, the way
+   Google Maps' own desktop turn-by-turn view floats its directions card
+   over the map instead of splitting the screen top/bottom. */
+@media (min-width: 900px) {
+  .navigation-page {
+    max-width: none;
+    height: 100%;
+  }
+
+  .navigation-page__map {
+    position: absolute;
+    inset: 0;
+  }
+
+  .navigation-page__sheet {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    width: 380px;
+    max-height: 70vh;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    z-index: 4;
+  }
+
+  .navigation-page__sheet-scroll {
+    padding: 16px 16px 4px;
+  }
+
+  .navigation-page__actions {
+    padding: 10px 16px 16px;
+  }
+}

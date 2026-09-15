@@ -1,0 +1,198 @@
+.plan-page {
+  position: relative;
+  height: 100%;
+}
+
+.plan-page--empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px 16px;
+}
+
+.plan-page__map {
+  position: absolute;
+  inset: 0;
+}
+
+.plan-page__map-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #e9e9e4;
+}
+
+/* A floating card over the map, not a boxed-in full page — the same
+   "popup after you search" treatment as the route preview and live
+   navigation sheets, so choosing a route feels continuous with the rest
+   of the app instead of a separate, plainer screen. */
+.plan-page__sheet {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  max-height: 60vh;
+  overflow-y: auto;
+  background: var(--color-bg);
+  border-radius: 20px;
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.22);
+  padding: 18px 18px calc(18px + env(safe-area-inset-bottom, 0px));
+  z-index: 4;
+}
+
+.plan-page__header {
+  margin-bottom: 14px;
+}
+
+.plan-page__kicker {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+  margin-bottom: 6px;
+}
+
+.plan-page__title {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--color-ink);
+}
+
+.plan-page__title span {
+  color: var(--color-orange);
+  font-weight: 500;
+  margin: 0 4px;
+}
+
+.plan-page__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 0;
+  color: var(--color-muted);
+}
+
+.plan-page__spinner {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 107, 0, 0.2);
+  border-top-color: var(--color-orange);
+  animation: plan-spin 0.8s linear infinite;
+}
+
+@keyframes plan-spin {
+  to { transform: rotate(360deg); }
+}
+
+.plan-page__options {
+  display: flex;
+  flex-direction: column;
+}
+
+.plan-page__fallback {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.plan-page__fallback-btn {
+  border: none;
+  border-radius: 12px;
+  padding: 14px 22px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  background: var(--color-ink);
+}
+
+.plan-page__fallback-btn:hover {
+  background: #000;
+}
+
+/* Flat rows with a soft highlight, not individually bordered boxes — the
+   division between options is a hairline, and only the focused/active one
+   picks up a tinted background, which is what actually reads as "clean"
+   next to a stack of five equally-loud bordered cards. */
+.plan-page__option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 14px 10px;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: none;
+  cursor: pointer;
+}
+
+.plan-page__option:last-child {
+  border-bottom: none;
+}
+
+.plan-page__option:hover,
+.plan-page__option--active {
+  background: var(--color-orange-bg);
+}
+
+.plan-page__option-dot {
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-border);
+}
+
+.plan-page__option--active .plan-page__option-dot {
+  background: var(--color-orange);
+}
+
+.plan-page__option-copy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plan-page__option-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+}
+
+.plan-page__option-stats {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.plan-page__option-arrow {
+  flex-shrink: 0;
+  color: var(--color-muted-2);
+  font-size: 20px;
+}
+
+@media (min-width: 900px) {
+  .plan-page__sheet {
+    left: 20px;
+    right: auto;
+    top: 20px;
+    bottom: 20px;
+    width: 400px;
+    max-height: none;
+    border-radius: 16px;
+  }
+}

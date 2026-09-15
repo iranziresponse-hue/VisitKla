@@ -1,0 +1,652 @@
+.cine {
+  position: fixed;
+  inset: 0;
+  background: #0d0b0a;
+  overflow: hidden;
+  z-index: 50;
+}
+
+.cine__map {
+  position: absolute;
+  inset: 0;
+  /* Colour grade the basemap itself — the Liberty palette is flat and pale
+     out of the box, which reads as "a map", not as a place you're riding
+     through at golden hour. */
+  filter: contrast(1.12) saturate(1.22) brightness(0.93);
+}
+
+/* --- film treatment ------------------------------------------------- */
+
+/* Classic orange-and-teal film grade: warm light from the sky, cool
+   shadow pooling in the foreground. */
+.cine__grade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 168, 76, 0.3), transparent 46%),
+    linear-gradient(0deg, rgba(16, 22, 54, 0.48), rgba(16, 22, 54, 0.08) 40%, transparent 62%);
+}
+
+.cine__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    transparent 38%,
+    rgba(6, 5, 4, 0.42) 78%,
+    rgba(6, 5, 4, 0.72) 100%
+  );
+}
+
+.cine__grain {
+  position: absolute;
+  inset: -40%;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  animation: cine-grain 0.7s steps(3) infinite;
+}
+
+@keyframes cine-grain {
+  0% { transform: translate(0, 0); }
+  33% { transform: translate(-3%, 2%); }
+  66% { transform: translate(2%, -3%); }
+  100% { transform: translate(0, 0); }
+}
+
+.cine__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  background: #070605;
+  pointer-events: none;
+  transition: height 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 3;
+}
+
+.cine__bar--top { top: 0; }
+.cine__bar--bottom { bottom: 0; }
+
+.cine--establishing .cine__bar,
+.cine--riding .cine__bar,
+.cine--paused .cine__bar,
+.cine--finished .cine__bar {
+  height: 7vh;
+}
+
+/* --- boot ------------------------------------------------------------ */
+
+.cine__boot {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: #0d0b0a;
+  z-index: 6;
+}
+
+.cine__boot-spinner {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 107, 0, 0.25);
+  border-top-color: #ff6b00;
+  animation: cine-spin 0.85s linear infinite;
+}
+
+@keyframes cine-spin {
+  to { transform: rotate(360deg); }
+}
+
+.cine__boot-garage {
+  position: relative;
+  width: min(320px, 78vw);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cine__boot-bike {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.5));
+  animation: cine-idle-shake 0.42s ease-in-out infinite;
+  transform-origin: 50% 85%;
+}
+
+@keyframes cine-idle-shake {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-0.6px) rotate(-0.35deg); }
+  75% { transform: translateY(0.6px) rotate(0.35deg); }
+}
+
+.cine__boot-beam {
+  position: absolute;
+  left: 8%;
+  top: 45%;
+  width: 46%;
+  height: 46%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 226, 160, 0.55),
+    rgba(255, 226, 160, 0.12) 45%,
+    transparent 75%
+  );
+  filter: blur(6px);
+  animation: cine-beam-flicker 1.8s ease-in-out infinite;
+}
+
+@keyframes cine-beam-flicker {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
+.cine__boot-text {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* --- hud -------------------------------------------------------------- */
+
+.cine__hud {
+  position: absolute;
+  top: calc(7vh + 14px);
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 5;
+  transition: top 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cine__kicker {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+
+.cine__hud-right {
+  display: flex;
+  gap: 8px;
+}
+
+.cine__chip {
+  border: none;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: rgba(18, 16, 15, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+}
+
+.cine__chip:hover {
+  background: rgba(38, 34, 32, 0.78);
+}
+
+.cine__chip--ghost {
+  padding: 7px 11px;
+}
+
+/* --- persistent "next landmark" banner --------------------------------
+   The caption (below) only shows for a few seconds right as you reach a
+   landmark — for everything in between there was no on-screen name at all,
+   which is exactly how the ride stopped reading as "clear." This stays up
+   the whole ride, high-contrast against literally anything underneath it. */
+
+.cine__next-banner {
+  position: absolute;
+  top: calc(7vh + 58px);
+  left: 16px;
+  right: 16px;
+  z-index: 5;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: rgba(10, 9, 8, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.cine__next-banner-label {
+  flex-shrink: 0;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ff9c4a;
+}
+
+.cine__next-banner-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- title card ------------------------------------------------------- */
+
+.cine__title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18vh;
+  padding: 0 28px;
+  text-align: center;
+  z-index: 4;
+  animation: cine-title-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes cine-title-in {
+  from { opacity: 0; transform: translateY(18px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+.cine__title-kicker {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #ffb067;
+  margin-bottom: 12px;
+}
+
+.cine__title-main {
+  margin: 0;
+  font-size: clamp(26px, 7vw, 44px);
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-shadow: 0 6px 26px rgba(0, 0, 0, 0.7);
+}
+
+.cine__title-arrow {
+  display: block;
+  color: #ff8c1a;
+  font-weight: 500;
+  margin: 2px 0;
+}
+
+.cine__title-sub {
+  display: block;
+  margin-top: 14px;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+/* --- landmark caption (lower third) ---------------------------------- */
+
+.cine__caption {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: calc(7vh + 88px);
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: rgba(14, 12, 11, 0.72);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.5);
+  z-index: 4;
+  animation: cine-caption-in 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+@keyframes cine-caption-in {
+  from { opacity: 0; transform: translateY(26px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+.cine__caption-badge {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 15px;
+  color: #fff;
+  background: linear-gradient(135deg, #ff8c1a, #e6541f);
+  box-shadow: 0 6px 18px rgba(255, 107, 0, 0.4);
+}
+
+.cine__caption-badge--hospital { background: linear-gradient(135deg, #4aa3ff, #1d63c4); }
+.cine__caption-badge--market { background: linear-gradient(135deg, #35c07a, #17794a); }
+.cine__caption-badge--stage,
+.cine__caption-badge--roundabout { background: linear-gradient(135deg, #e5b23d, #b8841f); }
+
+.cine__caption-landmark {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #ffb067;
+  margin-bottom: 5px;
+}
+
+.cine__caption-text {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.38;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* --- persistent actions ------------------------------------------------ */
+/* Always available once the ride is under way — no waiting for it to end
+   before you can start the real thing, and no separate "watch again"
+   control since finishing just loops back into another lap. */
+
+.cine__actions {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: calc(7vh + 26px);
+  z-index: 4;
+  display: flex;
+  gap: 10px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.cine__action {
+  flex: 1;
+  border: none;
+  border-radius: 13px;
+  padding: 13px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.32);
+}
+
+.cine__action--journey {
+  background: linear-gradient(135deg, #ff8c1a, #ef5f00);
+  flex: 1.3;
+}
+
+.cine__action--journey:hover {
+  filter: brightness(1.08);
+}
+
+/* --- timeline --------------------------------------------------------- */
+
+.cine__timeline {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: calc(7vh + 12px);
+  z-index: 4;
+}
+
+.cine__timeline-track {
+  position: relative;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.cine__timeline-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #ff8c1a, #ff6b00);
+  transform: scaleX(0);
+  transform-origin: left center;
+  box-shadow: 0 0 12px rgba(255, 140, 26, 0.8);
+}
+
+.cine__timeline-tick {
+  position: absolute;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateY(-50%);
+}
+
+/* --- map markers ------------------------------------------------------ */
+
+.rider {
+  position: relative;
+  width: 66px;
+  height: 94px;
+  pointer-events: none;
+}
+
+.rider__bike {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 7px rgba(0, 0, 0, 0.55));
+}
+
+.rider__shadow {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  width: 44px;
+  height: 60px;
+  margin-left: -22px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.42);
+  filter: blur(9px);
+}
+
+.rider__beam {
+  position: absolute;
+  left: 50%;
+  bottom: 70%;
+  width: 116px;
+  height: 140px;
+  margin-left: -58px;
+  background: linear-gradient(
+    to top,
+    rgba(255, 226, 160, 0.55),
+    rgba(255, 226, 160, 0.12) 45%,
+    transparent 78%
+  );
+  clip-path: polygon(42% 100%, 58% 100%, 100% 0%, 0% 0%);
+  filter: blur(2px);
+  animation: rider-beam 2.4s ease-in-out infinite;
+}
+
+@keyframes rider-beam {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
+}
+
+.veg-tree {
+  position: relative;
+  width: 30px;
+  height: 40px;
+  pointer-events: none;
+}
+
+.veg-tree__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 20px;
+  height: 9px;
+  margin-left: -10px;
+  background: rgba(0, 0, 0, 0.28);
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.veg-tree__trunk {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 4px;
+  height: 8px;
+  margin-left: -2px;
+  background: #5b4632;
+  border-radius: 1px;
+}
+
+.veg-tree__canopy-back,
+.veg-tree__canopy-front {
+  position: absolute;
+  left: 50%;
+  bottom: 9px;
+  border-radius: 50%;
+}
+
+.veg-tree__canopy-back {
+  width: 26px;
+  height: 26px;
+  margin-left: -13px;
+  /* Muted olive rather than cartoon green — closer to how real dry-season
+     tree canopy actually reads in aerial imagery, so the sprite sits on the
+     satellite texture instead of looking pasted on top of it. */
+  background: radial-gradient(circle at 35% 30%, #71764a, #3f4327 75%);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+  opacity: 0.94;
+}
+
+.veg-tree__canopy-front {
+  width: 17px;
+  height: 17px;
+  margin-left: -5px;
+  bottom: 14px;
+  background: radial-gradient(circle at 35% 30%, #8b8f5c, #565a35 75%);
+  opacity: 0.94;
+}
+
+.cine-pin {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.cine-pin__dot {
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #ff6b00;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.cine-pin__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 107, 0, 0.75);
+  animation: cine-pin-pulse 2.1s ease-out infinite;
+}
+
+.cine-pin--end .cine-pin__dot {
+  border-color: #16a34a;
+}
+
+.cine-pin--end .cine-pin__ring {
+  border-color: rgba(22, 163, 74, 0.75);
+}
+
+@keyframes cine-pin-pulse {
+  0% { transform: scale(0.7); opacity: 0.95; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* --- live-navigation puck -------------------------------------------- */
+
+.puck {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  pointer-events: none;
+}
+
+.puck__core {
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background: #2563eb;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.puck__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(37, 99, 235, 0.55);
+  animation: cine-pin-pulse 1.8s ease-out infinite;
+}
+
+.puck__cone {
+  position: absolute;
+  left: 50%;
+  bottom: 60%;
+  width: 46px;
+  height: 46px;
+  margin-left: -23px;
+  background: linear-gradient(
+    to top,
+    rgba(37, 99, 235, 0.45),
+    rgba(37, 99, 235, 0.05) 60%,
+    transparent 85%
+  );
+  clip-path: polygon(44% 100%, 56% 100%, 100% 0%, 0% 0%);
+  filter: blur(1px);
+}
+
+@media (min-width: 900px) {
+  .cine__caption {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: min(620px, 70vw);
+  }
+  @keyframes cine-caption-in {
+    from { opacity: 0; transform: translateX(-50%) translateY(26px) scale(0.97); }
+    to { opacity: 1; transform: translateX(-50%); }
+  }
+}

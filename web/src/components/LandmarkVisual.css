@@ -1,0 +1,64 @@
+.landmark-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #fff;
+}
+
+.landmark-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0px,
+    rgba(255, 255, 255, 0.08) 2px,
+    transparent 2px,
+    transparent 14px
+  );
+}
+
+.landmark-visual--thumb {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.landmark-visual--thumb .landmark-visual__icon {
+  width: 44%;
+  height: 44%;
+  opacity: 0.95;
+}
+
+.landmark-visual--banner {
+  width: 100%;
+  height: 100%;
+}
+
+.landmark-visual--banner .landmark-visual__icon {
+  width: 30%;
+  height: 30%;
+  max-width: 56px;
+  max-height: 56px;
+  opacity: 0.9;
+}
+
+.landmark-visual__icon {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.landmark-visual__label {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  z-index: 1;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}

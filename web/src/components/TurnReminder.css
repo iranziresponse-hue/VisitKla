@@ -1,0 +1,61 @@
+.turn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: #14110f;
+  color: #fff;
+  margin-bottom: 10px;
+  box-shadow: 0 8px 20px rgba(20, 17, 15, 0.24);
+  transition: background 300ms ease;
+}
+
+.turn--imminent {
+  background: linear-gradient(135deg, #ff8c1a, #ef5f00);
+  box-shadow: 0 10px 26px rgba(255, 107, 0, 0.4);
+  animation: turn-nudge 1.5s ease-in-out infinite;
+}
+
+@keyframes turn-nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+.turn__distance {
+  flex-shrink: 0;
+  min-width: 58px;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffb067;
+}
+
+.turn--imminent .turn__distance {
+  color: #fff;
+}
+
+.turn__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.turn__label {
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.turn--imminent .turn__label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.turn__landmark {
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
