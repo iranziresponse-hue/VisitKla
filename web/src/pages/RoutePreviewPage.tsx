@@ -95,7 +95,7 @@ export function RoutePreviewPage() {
               }`}
             >
               {distanceToStart > NEARBY_THRESHOLD_METERS
-                ? `You're ${formatDistance(distanceToStart)} from ${route.start} — this fixed route starts there, not exactly where you're standing.`
+                ? `You're ${formatDistance(distanceToStart)} from ${route.start}: this fixed route starts there, not exactly where you're standing.`
                 : `You're right at ${route.start} (${formatDistance(distanceToStart)}).`}
             </p>
           )}

@@ -168,7 +168,7 @@ export function SearchDrawer({
           >
             <span className="search-drawer__field-dot search-drawer__field-dot--to" />
             <span className="search-drawer__field-text search-drawer__field-text--placeholder">
-              Where you dey go?
+              Where to?
             </span>
           </button>
         </div>
@@ -191,7 +191,7 @@ export function SearchDrawer({
             }`}
           >
             {nearestStart.distanceMeters > outsideZoneMeters
-              ? `You're ${formatDistance(nearestStart.distanceMeters)} from Zone 1 — search any place above, no need to be nearby.`
+              ? `You're ${formatDistance(nearestStart.distanceMeters)} from Zone 1: search any place above, there's no need to be nearby.`
               : `Starting near ${nearestStart.landmark.name} (${formatDistance(nearestStart.distanceMeters)} away)`}
           </p>
         )}
@@ -202,7 +202,7 @@ export function SearchDrawer({
             otherMatches.length === 0 &&
             !searching && (
               <p className="search-drawer__empty">
-                {query ? "No place found for that." : "Zone 1 landmarks below, or search any place above."}
+                {query ? "No matching place found." : "Zone 1 landmarks below, or search any place above."}
               </p>
             )}
 

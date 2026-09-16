@@ -37,7 +37,7 @@
       "end": "Makerere Main Gate",
       "boda_price_min": 3000,
       "boda_price_max": 5000,
-      "panya_tip": "Coming from Wandegeya, if the road is jammed, branch near Ham Towers — it rejoins near the gate.",
+      "panya_tip": "Coming from Wandegeya, if the road is jammed, branch near Ham Towers. It rejoins near the gate.",
       "steps": [
         { "order": 1, "text": "Start at Total Wandegeya, the fuel station facing Bombo Road. Head uphill towards Makerere.", "landmark": "Wandegeya Total", "lat": 0.3298, "lng": 32.5730, "photo_url": "https://picsum.photos/seed/wandegeya_total/400/300" },
         { "order": 2, "text": "Ham Towers passes on your left now, boda stage there. Keep straight, uphill.", "landmark": "Ham Towers", "lat": 0.3280, "lng": 32.5704, "photo_url": "https://picsum.photos/seed/ham_towers/400/300" },

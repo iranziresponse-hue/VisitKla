@@ -31,7 +31,8 @@
   overflow-y: auto;
   margin: 0;
   border-radius: 20px;
-  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.45);
   background: var(--color-bg);
   z-index: 4;
   padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -59,7 +60,7 @@
 }
 
 .route-preview-page__distance--far {
-  color: #b45309 !important;
+  color: #ffb067 !important;
   font-weight: 600;
 }
 
@@ -72,10 +73,30 @@
   display: flex;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
   gap: 16px;
   padding: 0 16px;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  /* The next/previous card always peeks in a little at the edge — without
+     this it gets hard-clipped mid-word right at the container boundary,
+     which reads as broken rather than an intentional "there's more" hint.
+     Fading it to transparent instead is the standard treatment (Spotify,
+     Apple Music, etc. all mask their horizontal rails this way). */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 20px,
+    black calc(100% - 28px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 20px,
+    black calc(100% - 28px),
+    transparent 100%
+  );
 }
 
 .route-preview-page__stories::-webkit-scrollbar {
@@ -129,15 +150,20 @@
   gap: 14px;
   width: 100%;
   padding: 14px 16px;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 16px;
   cursor: pointer;
   text-align: left;
   color: #fff;
-  background: linear-gradient(135deg, #2b2622, #14110f);
-  box-shadow: 0 12px 26px rgba(20, 17, 15, 0.28);
+  background: linear-gradient(135deg, #3a332c, #1c1815);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4);
   position: relative;
   overflow: hidden;
+  transition: transform 160ms ease, filter 160ms ease;
+}
+
+.route-preview-page__watch:active {
+  transform: scale(0.98);
 }
 
 .route-preview-page__watch::after {
@@ -196,14 +222,20 @@
   font-size: 14px;
   cursor: pointer;
   text-align: center;
+  transition: filter 160ms ease, transform 160ms ease;
+}
+
+.route-preview-page__btn:active {
+  transform: scale(0.98);
 }
 
 .route-preview-page__btn--landmark {
-  background: var(--color-ink);
+  background: linear-gradient(135deg, #ff8c1a, #ef5f00);
+  box-shadow: 0 8px 20px rgba(255, 107, 0, 0.35);
 }
 
 .route-preview-page__btn--landmark:hover {
-  background: #000;
+  filter: brightness(1.08);
 }
 
 /* Desktop: the same floating popup, just docked to the left edge full-height
@@ -242,7 +274,7 @@
     font-size: 18px;
     line-height: 1;
     cursor: pointer;
-    color: var(--color-ink);
+    color: #1a1a1a;
   }
 
   .route-preview-page__arrow:hover {

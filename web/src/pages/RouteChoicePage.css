@@ -36,7 +36,8 @@
   overflow-y: auto;
   background: var(--color-bg);
   border-radius: 20px;
-  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.45);
   padding: 18px 18px calc(18px + env(safe-area-inset-bottom, 0px));
   z-index: 4;
 }
@@ -111,11 +112,13 @@
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
-  background: var(--color-ink);
+  background: linear-gradient(135deg, #ff8c1a, #ef5f00);
+  box-shadow: 0 8px 20px rgba(255, 107, 0, 0.35);
+  transition: filter 160ms ease;
 }
 
 .plan-page__fallback-btn:hover {
-  background: #000;
+  filter: brightness(1.08);
 }
 
 /* Flat rows with a soft highlight, not individually bordered boxes — the
@@ -134,6 +137,7 @@
   border-radius: 12px;
   background: none;
   cursor: pointer;
+  transition: background 160ms ease;
 }
 
 .plan-page__option:last-child {

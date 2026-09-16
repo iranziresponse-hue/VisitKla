@@ -4,10 +4,11 @@
   gap: 14px;
   padding: 10px 14px;
   border-radius: 14px;
-  background: #14110f;
+  background: var(--color-card-raised);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: #fff;
   margin-bottom: 10px;
-  box-shadow: 0 8px 20px rgba(20, 17, 15, 0.24);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
   transition: background 300ms ease;
 }
 

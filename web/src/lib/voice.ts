@@ -1,4 +1,5 @@
 import type { RouteStep } from "../types";
+import { respellForSpeech } from "./lugandaPronunciation";
 
 export type VoiceLanguage = "en" | "lg";
 
@@ -103,6 +104,10 @@ export function applyNaturalVoice(
   utterance: SpeechSynthesisUtterance,
   language: VoiceLanguage = "en"
 ): void {
+  // Place names get respelled for speech only — the text already on
+  // screen (captions, instruction cards) came from the same string before
+  // this runs, so what's displayed never changes, only what's heard.
+  utterance.text = respellForSpeech(utterance.text);
   utterance.lang = language === "lg" ? "lg-UG" : "en-US";
 
   const voice = pickVoice(language);

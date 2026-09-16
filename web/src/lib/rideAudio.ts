@@ -325,8 +325,10 @@ export function createRideAudio(): RideAudio | null {
 
     startAmbience() {
       if (disposed) return;
-      // distant city rumble under everything
-      roadGain.gain.setTargetAtTime(0.05, now(), 1.4);
+      // distant city rumble under everything — quieter once a real
+      // recording is carrying the engine, same reasoning as setThrottle.
+      const hasReal = !!(realEngineGain && realEngineSource);
+      roadGain.gain.setTargetAtTime(hasReal ? 0.01 : 0.05, now(), 1.4);
       scheduleAmbientHonk();
     },
 
@@ -339,14 +341,30 @@ export function createRideAudio(): RideAudio | null {
       if (disposed) return;
       const v = Math.min(1, Math.max(0, value));
       const t = now();
-      engineGain.gain.setTargetAtTime(0.028 + v * 0.055, t, 0.25);
+      const hasReal = !!(realEngineGain && realEngineSource);
+
+      // Once a real recording has loaded, it's the engine you actually
+      // hear — the synthesizer drops to a quiet support layer underneath
+      // (filling in the sub-bass/attack the recording's own filtering
+      // rolled off) instead of masking it. Previously both sat at similar,
+      // both-quiet levels, so swapping the recording never sounded like
+      // anything had changed.
+      const synthLevel = hasReal ? 0.35 : 1;
+      // The road rumble/tarmac hiss beds are literal synthesized noise —
+      // layered at full strength alongside a real recording that already
+      // carries its own road texture, that's exactly what read as "dirty
+      // background noise" once the recording was actually audible. Cut
+      // further than the engine oscillators (noise reads as grittier than
+      // a tonal hum at the same level).
+      const noiseLevel = hasReal ? 0.18 : 1;
+      engineGain.gain.setTargetAtTime(0.028 + v * 0.055 * synthLevel, t, 0.25);
       engineFilter.frequency.setTargetAtTime(420 + v * 1250, t, 0.3);
       engineOscA.frequency.setTargetAtTime(78 + v * 86, t, 0.3);
-      roadGain.gain.setTargetAtTime(0.04 + v * 0.07, t, 0.4);
-      roadGainHiss.gain.setTargetAtTime(0.012 + v * 0.03, t, 0.4);
-      if (realEngineGain && realEngineSource) {
-        realEngineGain.gain.setTargetAtTime(0.05 + v * 0.09, t, 0.3);
-        realEngineSource.playbackRate.setTargetAtTime(0.8 + v * 0.3, t, 0.3);
+      roadGain.gain.setTargetAtTime((0.04 + v * 0.07) * noiseLevel, t, 0.4);
+      roadGainHiss.gain.setTargetAtTime((0.012 + v * 0.03) * noiseLevel, t, 0.4);
+      if (hasReal) {
+        realEngineGain!.gain.setTargetAtTime(0.22 + v * 0.3, t, 0.3);
+        realEngineSource!.playbackRate.setTargetAtTime(0.85 + v * 0.3, t, 0.3);
       }
     },
 

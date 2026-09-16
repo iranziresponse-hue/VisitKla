@@ -1,7 +1,8 @@
 .story-card {
   background: var(--color-card);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 16px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
   padding: 14px;
   display: flex;
   flex-direction: column;

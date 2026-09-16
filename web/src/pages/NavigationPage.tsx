@@ -223,7 +223,7 @@ export function NavigationPage() {
 
         <div className="navigation-page__actions">
           <button className="navigation-page__report" onClick={handleReportIssue}>
-            This is wrong?
+            Something wrong?
           </button>
           <button className="navigation-page__next" onClick={handleNext}>
             {isApproaching
