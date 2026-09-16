@@ -38,10 +38,21 @@ export async function fetchRoadPath(waypoints: GeoPoint[]): Promise<GeoPoint[] |
   }
 }
 
+/** One real driving maneuver from OSRM's own turn-by-turn breakdown. */
+export interface RoadManeuver {
+  type: string;
+  modifier?: string;
+  name: string;
+  distanceMeters: number;
+  point: GeoPoint;
+}
+
 export interface RoadRouteOption {
   points: GeoPoint[];
   distanceMeters: number;
   durationSeconds: number;
+  /** Real turn-by-turn steps for this option, in order — see RoadManeuver. */
+  maneuvers: RoadManeuver[];
 }
 
 /**
@@ -60,7 +71,9 @@ export async function fetchRoadAlternatives(
   // A numeric alternative count is what actually returns >1 route on this
   // OSRM version — `alternatives=true` came back with only the single
   // best path even for pairs that do have a genuine second option.
-  const url = `${OSRM_ENDPOINT}/${coords}?geometries=geojson&overview=full&alternatives=3`;
+  // steps=true is what turns this into real turn-by-turn guidance instead
+  // of just "start here, arrive there" — see RoadManeuver.
+  const url = `${OSRM_ENDPOINT}/${coords}?geometries=geojson&overview=full&alternatives=3&steps=true`;
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -80,10 +93,31 @@ export async function fetchRoadAlternatives(
         })),
         distanceMeters: r.distance,
         durationSeconds: r.duration,
+        maneuvers: extractManeuvers(r),
       }));
   } catch {
     return [];
   } finally {
     clearTimeout(timeout);
   }
+}
+
+function extractManeuvers(route: any): RoadManeuver[] {
+  const legs: any[] = Array.isArray(route.legs) ? route.legs : [];
+  const out: RoadManeuver[] = [];
+  for (const leg of legs) {
+    const steps: any[] = Array.isArray(leg.steps) ? leg.steps : [];
+    for (const s of steps) {
+      const loc = s.maneuver?.location;
+      if (!Array.isArray(loc) || loc.length < 2) continue;
+      out.push({
+        type: s.maneuver?.type ?? "continue",
+        modifier: s.maneuver?.modifier,
+        name: typeof s.name === "string" ? s.name : "",
+        distanceMeters: typeof s.distance === "number" ? s.distance : 0,
+        point: { lng: loc[0], lat: loc[1] },
+      });
+    }
+  }
+  return out;
 }

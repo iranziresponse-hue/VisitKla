@@ -3,7 +3,7 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { Landmark, LatLng } from "../types";
 import { buildRideStyle } from "../lib/rideStyle";
-import { scatterTrees, waitForIdle, boundsOf, fitZoomFor } from "../lib/vegetation";
+import { waitForIdle, boundsOf, fitZoomFor } from "../lib/vegetation";
 import { createUserPuckElement } from "./cinematic/riderMarker";
 import "./WorldMap.css";
 
@@ -24,7 +24,6 @@ export function WorldMap({ landmarks, userLocation, onSelect }: WorldMapProps) {
   const mapRef = useRef<maplibregl.Map | null>(null);
   const puckRef = useRef<maplibregl.Marker | null>(null);
   const pinMarkersRef = useRef<maplibregl.Marker[]>([]);
-  const treeMarkersRef = useRef<maplibregl.Marker[]>([]);
   const onSelectRef = useRef(onSelect);
   const [ready, setReady] = useState(false);
 
@@ -85,7 +84,6 @@ export function WorldMap({ landmarks, userLocation, onSelect }: WorldMapProps) {
 
         await waitForIdle(m);
         if (cancelled) return;
-        treeMarkersRef.current = scatterTrees(m, points, { maxTrees: 70 });
 
         setReady(true);
       });
@@ -95,8 +93,6 @@ export function WorldMap({ landmarks, userLocation, onSelect }: WorldMapProps) {
       cancelled = true;
       pinMarkersRef.current.forEach((mk) => mk.remove());
       pinMarkersRef.current = [];
-      treeMarkersRef.current.forEach((t) => t.remove());
-      treeMarkersRef.current = [];
       puckRef.current = null;
       map?.remove();
       mapRef.current = null;
@@ -129,7 +125,7 @@ export function WorldMap({ landmarks, userLocation, onSelect }: WorldMapProps) {
       {!ready && (
         <div className="world-map__loading">
           <span className="world-map__spinner" />
-          <p className="world-map__loading-text">Loading Zone 1…</p>
+          <p className="world-map__loading-text">Loading the map…</p>
         </div>
       )}
     </div>

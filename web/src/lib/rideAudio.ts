@@ -1,11 +1,11 @@
 import type { LandmarkType } from "../types";
 
 /**
- * Kampala, synthesized. Every sound here is generated live with the Web
- * Audio API — boda engine, jam horns, market chatter, askari whistle — so
- * the ride has a real soundtrack without shipping a single audio file.
- * That keeps the "low-data" promise honest: the whole soundscape costs 0
- * bytes of bandwidth.
+ * Kampala, mostly synthesized — horns, market chatter, askari whistle, an
+ * arrival jingle, all generated live with the Web Audio API so the ride has
+ * a soundtrack without shipping audio files for them. The engine itself is
+ * the one exception: a real recorded motorcycle clip, not a synthesized
+ * substitute — see ENGINE_LOOP_SRC.
  */
 
 export type AudioCue =
@@ -13,34 +13,26 @@ export type AudioCue =
   | "arrive"
   | "depart";
 
-// A short trimmed-down real-recording texture, layered quietly under the
-// synthesized engine below rather than replacing it — the source clip is a
-// superbike, not a single-cylinder boda, and its licensing for shipping is
-// unconfirmed, so this stays a low-level "grain" bonus, not the main sound,
-// and must be swapped for a properly licensed recording before any real
-// deploy. Missing/failing to load just means the synthesized engine plays
-// alone, same as before this existed.
+// The engine sound, full stop — no synthesized oscillator/noise bed mixed
+// underneath it any more. There was one before (for the gap before this
+// clip finishes loading, and layered quietly under it afterward as
+// "texture"), but once a real recording is actually audible, any
+// synthesized engine/road noise running alongside it just reads as dirty
+// background noise competing with it, not texture. Missing/failing to load
+// just means silence where the engine would be until it's back — an
+// honest gap, not a fake stand-in playing instead.
 const ENGINE_LOOP_SRC = "/assets/boda-engine-loop.mp3";
 
 interface Nodes {
   ctx: AudioContext;
   master: GainNode;
   duckGain: GainNode;
-  engineGain: GainNode;
-  engineFilter: BiquadFilterNode;
-  engineOscA: OscillatorNode;
-  engineOscB: OscillatorNode;
-  engineOscC: OscillatorNode;
-  roadGain: GainNode;
-  roadGainHiss: GainNode;
-  noiseSource: AudioBufferSourceNode;
-  hissSource: AudioBufferSourceNode;
 }
 
 export interface RideAudio {
   resume(): void;
   setMuted(muted: boolean): void;
-  /** 0 = idling, 1 = full throttle. Drives engine pitch + road noise. */
+  /** 0 = idling, 1 = full throttle. Drives engine pitch + volume. */
   setThrottle(value: number): void;
   cue(type: AudioCue): void;
   /** Pull the ambience down while the narrator speaks. */
@@ -84,123 +76,22 @@ export function createRideAudio(): RideAudio | null {
     duckGain.gain.value = 1;
     duckGain.connect(master);
 
-    // --- engine -------------------------------------------------------
-    // A previous pass ran this through a tanh waveshaper for "grit" —
-    // saturating a sawtooth+square mix like that produces a harsh, buzzy
-    // artifact rather than a believable engine, and made it sound worse,
-    // not better. Pulled back out: no distortion stage, gentler filtering,
-    // pitch-only wobble (no gain modulation, which was compounding the
-    // harshness through the now-removed saturator).
-    const engineFilter = ctx.createBiquadFilter();
-    engineFilter.type = "lowpass";
-    engineFilter.frequency.value = 480;
-    engineFilter.Q.value = 2.2;
-
-    const engineGain = ctx.createGain();
-    engineGain.gain.value = 0;
-    engineFilter.connect(engineGain).connect(duckGain);
-
-    const engineOscA = ctx.createOscillator();
-    engineOscA.type = "sawtooth";
-    engineOscA.frequency.value = 88;
-    const engineOscB = ctx.createOscillator();
-    engineOscB.type = "triangle";
-    engineOscB.frequency.value = 44;
-    engineOscB.detune.value = 12;
-    // A third, subtly detuned copy for a touch of thickness — quiet
-    // relative to A/B so it doesn't reintroduce harshness on its own.
-    const engineOscC = ctx.createOscillator();
-    engineOscC.type = "sawtooth";
-    engineOscC.frequency.value = 88.6;
-    engineOscC.detune.value = -18;
-
-    const oscMixC = ctx.createGain();
-    oscMixC.gain.value = 0.25;
-    engineOscA.connect(engineFilter);
-    engineOscB.connect(engineFilter);
-    engineOscC.connect(oscMixC).connect(engineFilter);
-
-    // Combustion-pulse wobble: pitch vibrato only. Modulating gain through
-    // the same path (the previous version) compounded with the saturator
-    // to sound noisier, not more like an idling single-cylinder.
-    const wobble = ctx.createOscillator();
-    wobble.type = "sine";
-    wobble.frequency.value = 11;
-    const wobbleDepth = ctx.createGain();
-    wobbleDepth.gain.value = 14;
-    wobble.connect(wobbleDepth).connect(engineOscA.frequency);
-
-    // --- road + city bed ---------------------------------------------
-    const noiseSource = ctx.createBufferSource();
-    noiseSource.buffer = makeNoiseBuffer(ctx);
-    noiseSource.loop = true;
-
-    const roadFilter = ctx.createBiquadFilter();
-    roadFilter.type = "bandpass";
-    roadFilter.frequency.value = 780;
-    roadFilter.Q.value = 0.7;
-
-    const roadGain = ctx.createGain();
-    roadGain.gain.value = 0;
-    noiseSource.connect(roadFilter).connect(roadGain).connect(duckGain);
-
-    // A second, higher band for tarmac/gravel hiss under the tyres —
-    // layered with the low rumble instead of relying on one noise band
-    // to do both jobs.
-    const hissSource = ctx.createBufferSource();
-    hissSource.buffer = makeNoiseBuffer(ctx, 2);
-    hissSource.loop = true;
-    const hissFilter = ctx.createBiquadFilter();
-    hissFilter.type = "highpass";
-    hissFilter.frequency.value = 2200;
-    const roadGainHiss = ctx.createGain();
-    roadGainHiss.gain.value = 0;
-    hissSource.connect(hissFilter).connect(roadGainHiss).connect(duckGain);
-
-    engineOscA.start();
-    engineOscB.start();
-    engineOscC.start();
-    wobble.start();
-    noiseSource.start();
-    hissSource.start();
-
-    nodes = {
-      ctx,
-      master,
-      duckGain,
-      engineGain,
-      engineFilter,
-      engineOscA,
-      engineOscB,
-      engineOscC,
-      roadGain,
-      roadGainHiss,
-      noiseSource,
-      hissSource,
-    };
+    nodes = { ctx, master, duckGain };
   } catch {
     return null;
   }
 
-  const {
-    ctx,
-    master,
-    duckGain,
-    engineGain,
-    engineFilter,
-    engineOscA,
-    roadGain,
-    roadGainHiss,
-  } = nodes;
+  const { ctx, master, duckGain } = nodes;
 
   let muted = false;
   let disposed = false;
   let ambienceTimer: number | null = null;
 
-  // Real-recording engine texture (see ENGINE_LOOP_SRC) — loads async and
-  // silently stays off if the clip is absent or fails to decode.
-  let realEngineSource: AudioBufferSourceNode | null = null;
-  let realEngineGain: GainNode | null = null;
+  // The real engine recording (see ENGINE_LOOP_SRC) — loads async; until it
+  // does, and if it fails entirely, the engine is simply silent rather than
+  // falling back to a synthesized stand-in.
+  let engineSource: AudioBufferSourceNode | null = null;
+  let engineGain: GainNode | null = null;
 
   fetch(ENGINE_LOOP_SRC)
     .then((res) => (res.ok ? res.arrayBuffer() : Promise.reject(res.status)))
@@ -217,11 +108,11 @@ export function createRideAudio(): RideAudio | null {
       source.connect(gain).connect(duckGain);
       source.start();
 
-      realEngineSource = source;
-      realEngineGain = gain;
+      engineSource = source;
+      engineGain = gain;
     })
     .catch(() => {
-      /* no clip shipped, or it failed to decode — synth engine carries it alone */
+      /* no clip shipped, or it failed to decode — engine stays silent */
     });
 
   const now = () => ctx.currentTime;
@@ -325,10 +216,6 @@ export function createRideAudio(): RideAudio | null {
 
     startAmbience() {
       if (disposed) return;
-      // distant city rumble under everything — quieter once a real
-      // recording is carrying the engine, same reasoning as setThrottle.
-      const hasReal = !!(realEngineGain && realEngineSource);
-      roadGain.gain.setTargetAtTime(hasReal ? 0.01 : 0.05, now(), 1.4);
       scheduleAmbientHonk();
     },
 
@@ -341,30 +228,9 @@ export function createRideAudio(): RideAudio | null {
       if (disposed) return;
       const v = Math.min(1, Math.max(0, value));
       const t = now();
-      const hasReal = !!(realEngineGain && realEngineSource);
-
-      // Once a real recording has loaded, it's the engine you actually
-      // hear — the synthesizer drops to a quiet support layer underneath
-      // (filling in the sub-bass/attack the recording's own filtering
-      // rolled off) instead of masking it. Previously both sat at similar,
-      // both-quiet levels, so swapping the recording never sounded like
-      // anything had changed.
-      const synthLevel = hasReal ? 0.35 : 1;
-      // The road rumble/tarmac hiss beds are literal synthesized noise —
-      // layered at full strength alongside a real recording that already
-      // carries its own road texture, that's exactly what read as "dirty
-      // background noise" once the recording was actually audible. Cut
-      // further than the engine oscillators (noise reads as grittier than
-      // a tonal hum at the same level).
-      const noiseLevel = hasReal ? 0.18 : 1;
-      engineGain.gain.setTargetAtTime(0.028 + v * 0.055 * synthLevel, t, 0.25);
-      engineFilter.frequency.setTargetAtTime(420 + v * 1250, t, 0.3);
-      engineOscA.frequency.setTargetAtTime(78 + v * 86, t, 0.3);
-      roadGain.gain.setTargetAtTime((0.04 + v * 0.07) * noiseLevel, t, 0.4);
-      roadGainHiss.gain.setTargetAtTime((0.012 + v * 0.03) * noiseLevel, t, 0.4);
-      if (hasReal) {
-        realEngineGain!.gain.setTargetAtTime(0.22 + v * 0.3, t, 0.3);
-        realEngineSource!.playbackRate.setTargetAtTime(0.85 + v * 0.3, t, 0.3);
+      if (engineGain && engineSource) {
+        engineGain.gain.setTargetAtTime(0.22 + v * 0.3, t, 0.3);
+        engineSource.playbackRate.setTargetAtTime(0.85 + v * 0.3, t, 0.3);
       }
     },
 
@@ -418,12 +284,7 @@ export function createRideAudio(): RideAudio | null {
       disposed = true;
       if (ambienceTimer !== null) window.clearTimeout(ambienceTimer);
       try {
-        nodes.engineOscA.stop();
-        nodes.engineOscB.stop();
-        nodes.engineOscC.stop();
-        nodes.noiseSource.stop();
-        nodes.hissSource.stop();
-        realEngineSource?.stop();
+        engineSource?.stop();
       } catch {
         /* already stopped */
       }

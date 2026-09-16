@@ -61,27 +61,6 @@ export function createRiderElement(): HTMLElement {
   return el;
 }
 
-/**
- * Top-down tree canopy sprite, scattered across real park/grass/wood
- * polygons sampled from the map's own vector data (see lib/vegetation.ts).
- * Two offset blobs read as canopy-with-depth from the ride's steep pitch
- * without needing an actual 3D model.
- */
-export function createTreeElement(scale = 1): HTMLElement {
-  const el = document.createElement("div");
-  el.className = "veg-tree";
-  const hue = Math.round((Math.random() - 0.5) * 30);
-  el.style.transform = `scale(${scale.toFixed(2)})`;
-  el.style.filter = `hue-rotate(${hue}deg)`;
-  el.innerHTML = `
-    <div class="veg-tree__shadow"></div>
-    <div class="veg-tree__canopy-back"></div>
-    <div class="veg-tree__canopy-front"></div>
-    <div class="veg-tree__trunk"></div>
-  `;
-  return el;
-}
-
 /** Directional puck for live navigation — this is "you", not a cinematic actor. */
 export function createUserPuckElement(): HTMLElement {
   const el = document.createElement("div");

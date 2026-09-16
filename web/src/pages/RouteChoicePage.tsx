@@ -54,7 +54,7 @@ export function RouteChoicePage() {
   function choose(opt: RoadRouteOption | null) {
     const distance =
       opt?.distanceMeters ?? haversineMeters(from!.lat, from!.lng, to!.lat, to!.lng);
-    const route = synthesizeRoute(from!, to!, distance);
+    const route = synthesizeRoute(from!, to!, distance, opt?.maneuvers);
     navigate(`/route/${route.id}`, {
       state: { route, precomputedPath: opt?.points },
     });

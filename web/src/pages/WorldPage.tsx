@@ -118,6 +118,7 @@ export function WorldPage() {
         hubLandmarks={HUB_LANDMARKS}
         nearestStart={nearestStart}
         outsideZoneMeters={OUTSIDE_ZONE1_METERS}
+        userLocation={location}
         fromPick={fromPick}
         onPickFrom={setFromPick}
         onPickTo={handlePickTo}

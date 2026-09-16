@@ -20,15 +20,12 @@ export const SATELLITE_SOURCE_ID = "visitkla-satellite";
 // reading that style directly (see the fetch below), not guessed:
 // - landcover_*/landuse_* fill layers are the flat cartoon ground colors we
 //   replace with real aerial imagery.
-// - `park`/`landcover_grass`/`landcover_wood` are exactly where we sample
-//   candidate points for scattered trees (see lib/vegetation.ts).
 // - poi_r7/poi_r20 are the low-importance shop/cafe icon clutter; poi_r1 and
 //   poi_transit are higher-importance (more likely a hall/hospital/college)
 //   and stay. Place labels (suburbs like "Zone 6a") are a separate layer and
 //   were never touched by the old blanket POI filter.
 const GROUND_FILL_SOURCE_LAYERS = new Set(["landcover", "landuse"]);
 const MINOR_POI_LAYER_IDS = new Set(["poi_r7", "poi_r20"]);
-export const VEGETATION_QUERY_LAYERS = ["park", "landcover_grass", "landcover_wood"];
 const BUILDING_LAYER_ID = "building-3d";
 
 /**

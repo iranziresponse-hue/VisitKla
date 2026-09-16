@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import type { Landmark } from "../types";
+import type { Landmark, LatLng } from "../types";
 import type { GeocodeResult } from "../lib/geocode";
 import { searchPlaces, formatPlaceLabel } from "../lib/geocode";
+import { fetchNearbyPlaces, type NearbyPlace } from "../lib/nearbyPlaces";
 import { LandmarkListItem } from "./LandmarkListItem";
 import { formatDistance } from "../lib/distance";
 import { getRecentSearches, addRecentSearch } from "../lib/recentSearches";
@@ -16,7 +17,7 @@ export interface PlacePick {
   name: string;
   lat: number;
   lng: number;
-  /** True for one of our 15 curated Zone 1 landmarks — false for anywhere else. */
+  /** True for one of our 15 hand-curated hub landmarks — false for anywhere else. */
   isHub: boolean;
 }
 
@@ -26,9 +27,14 @@ interface SearchDrawerProps {
   hubLandmarks: Landmark[];
   nearestStart: NearestStart | null;
   outsideZoneMeters: number;
+  userLocation: LatLng | null;
   fromPick: PlacePick | null;
   onPickFrom: (pick: PlacePick | null) => void;
   onPickTo: (pick: PlacePick) => void;
+}
+
+function nearbyToPick(place: NearbyPlace): PlacePick {
+  return { name: place.name, lat: place.lat, lng: place.lng, isHub: false };
 }
 
 const GEOCODE_DEBOUNCE_MS = 350;
@@ -55,6 +61,7 @@ export function SearchDrawer({
   hubLandmarks,
   nearestStart,
   outsideZoneMeters,
+  userLocation,
   fromPick,
   onPickFrom,
   onPickTo,
@@ -64,8 +71,14 @@ export function SearchDrawer({
   const [geocoded, setGeocoded] = useState<GeocodeResult[]>([]);
   const [searching, setSearching] = useState(false);
   const [recents, setRecents] = useState<PlacePick[]>([]);
+  const [nearby, setNearby] = useState<NearbyPlace[]>([]);
+  const [nearbyLoading, setNearbyLoading] = useState(false);
   const debounceRef = useRef<number | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+
+  const isOutsideZone = !!(
+    nearestStart && nearestStart.distanceMeters > outsideZoneMeters
+  );
 
   useEffect(() => {
     if (open) {
@@ -76,6 +89,30 @@ export function SearchDrawer({
       setActiveField("to");
     }
   }, [open]);
+
+  // Wherever the user actually is, the quick-pick list should be relevant
+  // to THEM — not always the same 15 hub landmarks near Makerere/Wandegeya
+  // regardless of how far away that is. Fetched once per drawer-open, only
+  // when it's actually needed (a real GPS fix, far enough from the hub
+  // area that showing it would be misleading).
+  useEffect(() => {
+    if (!open || !userLocation || !isOutsideZone) {
+      setNearby([]);
+      return;
+    }
+    let cancelled = false;
+    setNearbyLoading(true);
+    fetchNearbyPlaces(userLocation.latitude, userLocation.longitude).then((places) => {
+      if (!cancelled) {
+        setNearby(places);
+        setNearbyLoading(false);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, isOutsideZone]);
 
   useEffect(() => {
     if (debounceRef.current) window.clearTimeout(debounceRef.current);
@@ -114,6 +151,12 @@ export function SearchDrawer({
   const hubNames = new Set(hubMatches.map((l) => l.name.toLowerCase()));
   const otherMatches = geocoded.filter((g) => !hubNames.has(g.name.toLowerCase()));
   const showRecents = query ? [] : recents;
+  // Real places near wherever the user actually is take priority over the
+  // hub list once they're far enough away that the hub list wouldn't be
+  // relevant — but only once we actually have something to show instead,
+  // so a slow/failed fetch never leaves the drawer emptier than before.
+  const showNearby = !query && isOutsideZone ? nearby : [];
+  const showHubList = showNearby.length > 0 ? [] : hubMatches;
 
   function handlePick(pick: PlacePick) {
     if (activeField === "from") {
@@ -134,7 +177,7 @@ export function SearchDrawer({
         <div className="search-drawer__top">
           <div>
             <h1 className="search-drawer__title">VisitKla</h1>
-            <p className="search-drawer__subtitle">Search any place, not just Zone 1</p>
+            <p className="search-drawer__subtitle">Search any place in Uganda</p>
           </div>
           <button className="search-drawer__close" onClick={onClose} aria-label="Close search">
             ✕
@@ -185,24 +228,28 @@ export function SearchDrawer({
         {!query && activeField === "to" && nearestStart && !fromPick && (
           <p
             className={`search-drawer__nearest ${
-              nearestStart.distanceMeters > outsideZoneMeters
-                ? "search-drawer__nearest--far"
-                : ""
+              isOutsideZone ? "search-drawer__nearest--far" : ""
             }`}
           >
-            {nearestStart.distanceMeters > outsideZoneMeters
-              ? `You're ${formatDistance(nearestStart.distanceMeters)} from Zone 1: search any place above, there's no need to be nearby.`
+            {isOutsideZone
+              ? nearbyLoading
+                ? "Finding real places near you…"
+                : nearby.length > 0
+                  ? "Showing real places near where you are."
+                  : `You're ${formatDistance(nearestStart.distanceMeters)} from our curated landmarks: search any place above instead.`
               : `Starting near ${nearestStart.landmark.name} (${formatDistance(nearestStart.distanceMeters)} away)`}
           </p>
         )}
 
         <div className="search-drawer__list">
           {showRecents.length === 0 &&
-            hubMatches.length === 0 &&
+            showNearby.length === 0 &&
+            showHubList.length === 0 &&
             otherMatches.length === 0 &&
-            !searching && (
+            !searching &&
+            !nearbyLoading && (
               <p className="search-drawer__empty">
-                {query ? "No matching place found." : "Zone 1 landmarks below, or search any place above."}
+                {query ? "No matching place found." : "Popular landmarks below, or search any place above."}
               </p>
             )}
 
@@ -222,12 +269,25 @@ export function SearchDrawer({
             </>
           )}
 
-          {hubMatches.length > 0 && (
+          {showNearby.length > 0 && (
+            <>
+              <p className="search-drawer__section">Near you</p>
+              {showNearby.map((place, i) => (
+                <LandmarkListItem
+                  key={`${place.name}-${i}`}
+                  landmark={{ id: place.name, name: place.name, alias: [], lat: place.lat, lng: place.lng, photo_url: "", type: place.type }}
+                  onClick={() => handlePick(nearbyToPick(place))}
+                />
+              ))}
+            </>
+          )}
+
+          {showHubList.length > 0 && (
             <>
               {(query || showRecents.length > 0) && (
-                <p className="search-drawer__section">Zone 1 landmarks</p>
+                <p className="search-drawer__section">Popular landmarks</p>
               )}
-              {hubMatches.map((landmark) => (
+              {showHubList.map((landmark) => (
                 <LandmarkListItem
                   key={landmark.id}
                   landmark={landmark}

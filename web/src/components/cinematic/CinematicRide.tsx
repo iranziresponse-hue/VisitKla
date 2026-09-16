@@ -14,7 +14,7 @@ import {
   type RidePath,
 } from "../../lib/geo";
 import { fetchRoadPath } from "../../lib/roadRoute";
-import { scatterTrees, waitForIdle, boundsOf, fitZoomFor } from "../../lib/vegetation";
+import { waitForIdle, boundsOf, fitZoomFor } from "../../lib/vegetation";
 import { SATELLITE_SOURCE_ID } from "../../lib/rideStyle";
 import { findLandmarkByName } from "../../data/landmarks";
 import { createRideAudio, type RideAudio } from "../../lib/rideAudio";
@@ -129,7 +129,6 @@ export function CinematicRide({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const riderRef = useRef<maplibregl.Marker | null>(null);
-  const treeMarkersRef = useRef<maplibregl.Marker[]>([]);
   const rafRef = useRef<number | null>(null);
   const virtualElapsedRef = useRef(0);
   const lastFrameTimeRef = useRef(0);
@@ -201,7 +200,20 @@ export function CinematicRide({
     route.steps.forEach((s) => waypoints.push(toGeoPoint(s)));
 
     (async () => {
-      const road = await fetchRoadPath(waypoints);
+      // Only the real start and end are forced through OSRM — intermediate
+      // landmarks are narration cue points, not mandatory routing
+      // waypoints. Forcing every one of them as a hard via-point meant a
+      // single imprecise landmark coordinate (one that happens to snap to
+      // a nearby dead-end/compound access road instead of the real
+      // through-road) could corrupt the ENTIRE route with a long
+      // out-and-back detour just to touch it exactly — verified on a real
+      // route where this doubled the total ride distance and made the
+      // rider appear to cut through a residential compound. The captions
+      // below (distanceAlongFor) already find the nearest point on
+      // whatever path we end up with to each landmark, so nothing about
+      // caption timing depends on the road actually passing through them.
+      const endpoints = [waypoints[0], waypoints[waypoints.length - 1]];
+      const road = await fetchRoadPath(endpoints);
       if (cancelled) return;
       if (road && road.length > 1) {
         setRidePath(buildRidePath(road, { smooth: false }));
@@ -492,10 +504,6 @@ export function CinematicRide({
           if (cancelled) return;
         }
 
-        treeMarkersRef.current = scatterTrees(m, ridePath.points, {
-          maxTrees: isShortRoute ? 30 : 80,
-        });
-
         if (!isShortRoute) {
           if (m.getLayer(SATELLITE_SOURCE_ID)) {
             m.setLayoutProperty(SATELLITE_SOURCE_ID, "visibility", "visible");
@@ -528,8 +536,6 @@ export function CinematicRide({
         window.speechSynthesis.cancel();
       }
       riderRef.current = null;
-      treeMarkersRef.current.forEach((t) => t.remove());
-      treeMarkersRef.current = [];
       map?.remove();
       mapRef.current = null;
     };
@@ -645,14 +651,16 @@ export function CinematicRide({
           <span className="cine__next-banner-label">
             {arrivedAtLast ? "Arriving at" : "Next"}
           </span>
-          <span className="cine__next-banner-name">{upcomingStep.landmark}</span>
+          <span className="cine__next-banner-name" key={upcomingStep.landmark}>
+            {upcomingStep.landmark}
+          </span>
         </div>
       )}
 
       {phase === "establishing" && (
         <div className="cine__title">
           <span className="cine__title-kicker">
-            {startsFromUser ? "From where you are" : "Zone 1 · Kampala"}
+            {startsFromUser ? "From where you are" : "Kampala"}
           </span>
           <h1 className="cine__title-main">
             {route.start}

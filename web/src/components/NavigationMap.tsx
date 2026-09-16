@@ -13,7 +13,7 @@ import {
 } from "../lib/geo";
 import { fetchRoadPath } from "../lib/roadRoute";
 import { createRiderElement } from "./cinematic/riderMarker";
-import { scatterTrees, waitForIdle, boundsOf, fitZoomFor } from "../lib/vegetation";
+import { waitForIdle, boundsOf, fitZoomFor } from "../lib/vegetation";
 import { SATELLITE_SOURCE_ID } from "../lib/rideStyle";
 import "./NavigationMap.css";
 
@@ -45,7 +45,6 @@ export function NavigationMap({
   const mapRef = useRef<maplibregl.Map | null>(null);
   const puckRef = useRef<maplibregl.Marker | null>(null);
   const stepMarkersRef = useRef<maplibregl.Marker[]>([]);
-  const treeMarkersRef = useRef<maplibregl.Marker[]>([]);
   const headingRef = useRef(0);
   const lastFixRef = useRef<GeoPoint | null>(null);
   const [ready, setReady] = useState(false);
@@ -64,12 +63,20 @@ export function NavigationMap({
       // approximation if the network call fails. A specific alternative
       // the user already picked (RouteChoicePage) is used as-is, since
       // re-deriving from steps would silently discard that choice.
+      //
+      // Only the real start and end are forced through OSRM — forcing
+      // every intermediate landmark as a hard via-point meant one
+      // imprecise coordinate (snapping to a dead-end/compound lane
+      // instead of the real through-road) could corrupt the whole route
+      // with a long out-and-back detour. Step markers below still use the
+      // full landmark list regardless of the road geometry.
       const waypoints = steps.map(toGeoPoint);
       let path;
       if (precomputedPath && precomputedPath.length > 1) {
         path = buildRidePath(precomputedPath, { smooth: false });
       } else {
-        const road = await fetchRoadPath(waypoints);
+        const endpoints = [waypoints[0], waypoints[waypoints.length - 1]];
+        const road = await fetchRoadPath(endpoints);
         if (cancelled) return;
         path =
           road && road.length > 1
@@ -167,13 +174,6 @@ export function NavigationMap({
         await waitForIdle(m);
         if (cancelled) return;
 
-        // Lower cap than the cinematic ride: this view is scrutinized at a
-        // standstill rather than glanced at mid-motion, so a lighter hand
-        // reads as real vegetation rather than a sticker sheet.
-        treeMarkersRef.current = scatterTrees(m, path.points, {
-          maxTrees: isShortRoute ? 20 : 45,
-        });
-
         if (!isShortRoute) {
           if (m.getLayer(SATELLITE_SOURCE_ID)) {
             m.setLayoutProperty(SATELLITE_SOURCE_ID, "visibility", "visible");
@@ -200,8 +200,6 @@ export function NavigationMap({
       cancelled = true;
       stepMarkersRef.current.forEach((mk) => mk.remove());
       stepMarkersRef.current = [];
-      treeMarkersRef.current.forEach((t) => t.remove());
-      treeMarkersRef.current = [];
       puckRef.current = null;
       map?.remove();
       mapRef.current = null;
